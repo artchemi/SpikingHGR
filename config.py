@@ -15,25 +15,37 @@ NUM_CLASSES = len(GESTURE_INDEXES_MAIN)
 
 VALID_SIZE = 0.5    # Доля от test
 TEST_SIZE = 0.3    # Доля от общей выборки
-BATCH_SIZE = 384    # ???
+BATCH_SIZE = 2**7    # ???
 
-INIT_LR= 0.2
+INIT_LR= 0.001    # 1e-4
 
 WINDOW_SIZE = 52
 STEP_SIZE = 16
 
-EPOCHS = 200
+EPOCHS = 1000
 PATIENCE = 50
 
 # ! Гиперпараметры базовой модели
 INPUT_SHAPE_BASE = (WINDOW_SIZE, len(CHANNELS), 1)
-FILTERS_SNN = (48, 96)
+FILTERS_SNN = (3, 6)
 KERNEL_SIZE_SNN = (1, 3)    # (3, 3)
 POOL_SIZE_SNN = (1, 2)
-P_DROPOUT_SNN = 0.5
+P_DROPOUT_SNN = 0.25
+NUM_STEPS = 32    # ???
 
 # ! Параметры LIF нейронов
-BETA = 0.5
+BETA_LIF = 0.9
+LEARN_THRESHOLD_LIF = True
+THRS_LIF = 1.
+
+# ! Параметры синаптического нейрона
+ALPHA_SYNAPTIC = 0.9
+BETA_SYNAPTIC = 0.5 
+
+# ! Гиперпараметры рекуррентной модели
+HIDDEN_DIM_RNN_LIF = 20
+TIME_STEPS_RNN_LIF = 32
+DT = 0.0001
 
 # NOTE: Прочее
 GLOBAL_SEED = 42

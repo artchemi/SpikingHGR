@@ -4,6 +4,32 @@ import json
 import scipy.io
 import random
 import os
+import torch
+from torch.utils.data import Dataset
+
+class SpikingEMGDataset(Dataset):
+    def __init__(self, X, y, transform=None):
+        """
+        X: numpy array или torch.Tensor, форма [N, T, C, H, W]
+        y: numpy array или torch.Tensor, форма [N]
+        transform: callable или None, опционально применить к X[t]
+        """
+        super().__init__()
+        self.X = torch.tensor(X, dtype=torch.float32) if not torch.is_tensor(X) else X
+        self.y = torch.tensor(y, dtype=torch.long)    # для CrossEntropyLoss
+        self.transform = transform
+
+    def __len__(self):
+        return len(self.y)
+
+    def __getitem__(self, idx):
+        x = self.X[idx]  # [T, C, H, W]
+        y = self.y[idx]
+
+        if self.transform:
+            x = torch.stack([self.transform(t) for t in x])  # применить к каждому шагу во времени
+
+        return x, y
 
 
 def folder_extract(root_dir, exercises=["E2"], myo_pref="elbow"):
